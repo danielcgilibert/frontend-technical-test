@@ -1,0 +1,21 @@
+.chat {
+  border: 2px solid rgba(161, 160, 160, 0.249);
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  gap: 2rem;
+}
+
+.chat img {
+  border-radius: 100%;
+}
+.chat h1 {
+  font-size: larger;
+}
+
+.chat span {
+  text-transform: capitalize;
+  color: gray;
+  font-size: small;
+}
