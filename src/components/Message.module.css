@@ -1,0 +1,22 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.message {
+  padding: 1rem;
+  border-radius: 1rem;
+  color: black;
+}
+
+.messageSend {
+  background-color: #4894ee;
+  color: white;
+  grid-column: 2 / 4;
+}
+
+.messageReceived {
+  background-color: #e8e8ea;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
