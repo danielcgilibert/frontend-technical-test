@@ -53,48 +53,6 @@
       "timestamp": 1620284667,
       "authorId": 2,
       "body": "Bonjour c'est le premier message de la seconde conversation"
-    },
-    {
-      "conversationId": 1,
-      "body": "Hola hola",
-      "authorId": 1,
-      "timestamp": 0,
-      "id": 5
-    },
-    {
-      "conversationId": 1,
-      "body": "asdsad",
-      "authorId": 1,
-      "timestamp": 1678644242742,
-      "id": 6
-    },
-    {
-      "conversationId": 1,
-      "body": "test polling",
-      "authorId": 1,
-      "timestamp": 1678645546327,
-      "id": 7
-    },
-    {
-      "conversationId": 1,
-      "body": "asdsadsd",
-      "authorId": 1,
-      "timestamp": 1678645688710,
-      "id": 8
-    },
-    {
-      "conversationId": 2,
-      "body": "Hola hola",
-      "authorId": 1,
-      "timestamp": 1678645788282,
-      "id": 9
-    },
-    {
-      "conversationId": 2,
-      "body": "Hollaaa",
-      "authorId": 1,
-      "timestamp": 1678646015657,
-      "id": 10
     }
   ],
   "users": [

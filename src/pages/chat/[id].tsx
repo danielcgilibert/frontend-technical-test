@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import useSWR from 'swr'
 import Message from '../../components/message'
 import styles from '../../styles/ChatPage.module.css'
 import { Conversation } from '../../types/conversation'
@@ -10,6 +11,7 @@ interface chatPageProps {
   conversation: Conversation
   userId: number
 }
+const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 const ChatPage = ({
   messages: messagesServer,
@@ -17,26 +19,18 @@ const ChatPage = ({
   conversation,
 }: chatPageProps) => {
   const [chatInput, setChatInput] = useState('')
-  const [messages, setMessages] = useState(messagesServer)
 
-  const getMessages = async () => {
-    const messagesData = await fetch(
-      `http://127.0.0.1:3005/messages/${conversation.id}`
-    )
-    const newMessages: Message[] = await messagesData.json()
-
-    setMessages(newMessages)
-    await new Promise(resolve => setTimeout(resolve, 5000))
-
-    await getMessages()
-  }
-
-  useEffect(() => {
-    getMessages()
-  }, [])
+  const { data: messages, mutate } = useSWR(
+    `http://127.0.0.1:3005/messages/${conversation.id}`,
+    fetcher,
+    {
+      refreshInterval: 5000,
+      fallbackData: messagesServer,
+    }
+  )
 
   const postMessage = async () => {
-    fetch(`http://127.0.0.1:3005/messages/${conversation.id}`, {
+    await fetch(`http://127.0.0.1:3005/messages/${conversation.id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,6 +42,8 @@ const ChatPage = ({
         timestamp: Date.now(),
       }),
     })
+
+    mutate()
   }
 
   const handleSubmitMessage = e => {
