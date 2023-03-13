@@ -1,5 +1,7 @@
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
 import Message from '../../components/message'
+import styles from '../../styles/ChatPage.module.css'
 import { Conversation } from '../../types/conversation'
 import { getLoggedUserId } from '../../utils/getLoggedUserId'
 
@@ -9,9 +11,53 @@ interface chatPageProps {
   userId: number
 }
 
-const ChatPage = ({ messages, userId, conversation }: chatPageProps) => {
+const ChatPage = ({
+  messages: messagesServer,
+  userId,
+  conversation,
+}: chatPageProps) => {
+  const [chatInput, setChatInput] = useState('')
+  const [messages, setMessages] = useState(messagesServer)
+
+  const getMessages = async () => {
+    const messagesData = await fetch(
+      `http://127.0.0.1:3005/messages/${conversation.id}`
+    )
+    const newMessages: Message[] = await messagesData.json()
+
+    setMessages(newMessages)
+    await new Promise(resolve => setTimeout(resolve, 5000))
+
+    await getMessages()
+  }
+
+  useEffect(() => {
+    getMessages()
+  }, [])
+
+  const postMessage = async () => {
+    fetch(`http://127.0.0.1:3005/messages/${conversation.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        conversationId: conversation.id,
+        body: chatInput,
+        authorId: userId,
+        timestamp: Date.now(),
+      }),
+    })
+  }
+
+  const handleSubmitMessage = e => {
+    e.preventDefault()
+    postMessage()
+    setChatInput('')
+  }
+
   return (
-    <div>
+    <div className={styles.wrapper}>
       <Head>
         <title>Frontend Technical test - Leboncoin</title>
         <meta
@@ -31,6 +77,16 @@ const ChatPage = ({ messages, userId, conversation }: chatPageProps) => {
         {messages.map(message => (
           <Message key={message.id} message={message} />
         ))}
+
+        <form onSubmit={handleSubmitMessage}>
+          <input
+            type="text"
+            name="chatInput"
+            value={chatInput}
+            placeholder="Type here..."
+            onChange={e => setChatInput(e.target.value)}
+          />
+        </form>
       </main>
     </div>
   )
@@ -54,6 +110,6 @@ export async function getServerSideProps({ params }) {
   )
 
   return {
-    props: { messages, conversation, userId }, // will be passed to the page component as props
+    props: { messages, conversation, userId },
   }
 }

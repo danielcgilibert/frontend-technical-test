@@ -1,0 +1,14 @@
+.wrapper {
+}
+
+.wrapper form {
+  display: flex;
+  border-radius: 0.5rem;
+  border: 2px solid rgba(0, 0, 0, 0.657);
+}
+
+.wrapper form input {
+  border: none;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
